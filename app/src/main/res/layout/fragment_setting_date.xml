@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <TextView
+        style="@style/TextView_base.primary"
+        android:id="@+id/title_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/wrap_count_start"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text = "系统日期"
+        android:textSize="@dimen/textSize_medium"/>
+
+    <LinearLayout
+        android:id="@+id/wrap_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/title_date"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp">
+
+        <EditText
+            style="@style/TextView_base.primary"
+            android:id="@+id/et_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:minWidth="150dp"
+            android:background="@drawable/bg_edittext"
+            android:inputType="date"
+            android:imeOptions="actionNext"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/wrap_date"
+        android:background="@color/colorDivider"/>
+
+    <TextView
+        style="@style/TextView_base.primary"
+        android:id="@+id/title_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/wrap_date"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text = "系统时间"
+        android:textSize="@dimen/textSize_medium"/>
+
+    <LinearLayout
+        android:id="@+id/wrap_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/title_time"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp">
+
+        <EditText
+            style="@style/TextView_base.primary"
+            android:id="@+id/et_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:minWidth="150dp"
+            android:background="@drawable/bg_edittext"
+            android:inputType="date"
+            android:imeOptions="actionDone"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/wrap_time"
+        android:background="@color/colorDivider"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/wrap_time"
+        android:layout_marginTop="20dp"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp">
+
+        <Button
+            style="@style/btn_base"
+            android:id="@+id/btn_read"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:text="读取"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <Button
+            style="@style/btn_base"
+            android:id="@+id/btn_write"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:text="写入"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <TextView
+        style="@style/TextView_base.primary"
+        android:id="@+id/title_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/wrap_print_time"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text = "喷码机地址"
+        android:textSize="@dimen/textSize_medium"/>
+
+    <LinearLayout
+        android:id="@+id/wrap_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title_address"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp">
+
+        <EditText
+            style="@style/TextView_base.primary"
+            android:id="@+id/et_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:minWidth="150dp"
+            android:background="@drawable/bg_edittext"
+            android:inputType="text"
+            android:imeOptions="actionNext"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/wrap_address"
+        android:background="@color/colorDivider"/>
+
+    <TextView
+        style="@style/TextView_base.primary"
+        android:id="@+id/title_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/wrap_address"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text = "喷码机名称"
+        android:textSize="@dimen/textSize_medium"/>
+
+    <LinearLayout
+        android:id="@+id/wrap_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title_name"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp">
+
+        <EditText
+            style="@style/TextView_base.primary"
+            android:id="@+id/et_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:minWidth="150dp"
+            android:background="@drawable/bg_edittext"
+            android:inputType="text"
+            android:imeOptions="actionNext"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/wrap_name"
+        android:background="@color/colorDivider"/>
+
+    <TextView
+        style="@style/TextView_base.primary"
+        android:id="@+id/title_device_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/wrap_name"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text = "设备地址"
+        android:textSize="@dimen/textSize_medium"/>
+
+    <LinearLayout
+        android:id="@+id/wrap_device_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title_device_address"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp">
+
+        <EditText
+            style="@style/TextView_base.primary"
+            android:id="@+id/et_device_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:minWidth="150dp"
+            android:background="@drawable/bg_edittext"
+            android:inputType="text"
+            android:digits="@string/number_digits"
+            android:imeOptions="actionNext"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/wrap_device_address"
+        android:background="@color/colorDivider"/>
+
+    <TextView
+        style="@style/TextView_base.primary"
+        android:id="@+id/title_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/wrap_device_address"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text = "操作密码"
+        android:textSize="@dimen/textSize_medium"/>
+
+    <LinearLayout
+        android:id="@+id/wrap_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title_password"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp">
+
+        <EditText
+            style="@style/TextView_base.primary"
+            android:id="@+id/et_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:minWidth="150dp"
+            android:background="@drawable/bg_edittext"
+            android:inputType="textPassword"
+            android:imeOptions="actionDone"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/wrap_password"
+        android:background="@color/colorDivider"/>
+
+    <Button
+        style="@style/btn_base"
+        android:id="@+id/btn_write"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/wrap_password"
+        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true"
+        android:text="写入"
+        android:textColor="@color/white"/>
+
+</RelativeLayout>

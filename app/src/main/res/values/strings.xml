@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">octopus</string>
+    <string name="digits">1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM`-=[]\;,./~!@#$%^*()_+}{:?&amp;&lt;&gt;&quot;&apos;</string>
+    <string name="number_digits">1234567890</string>
+</resources>

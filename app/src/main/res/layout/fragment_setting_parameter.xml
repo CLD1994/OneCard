@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+
+    <TextView
+        style="@style/TextView_base.primary"
+        android:id="@+id/title_char_width"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text = "字符宽度"
+        android:textSize="@dimen/textSize_medium"/>
+
+    <LinearLayout
+        android:id="@+id/wrap_char_width"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title_char_width"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:paddingBottom="10dp">
+
+        <EditText
+            style="@style/TextView_base.primary"
+            android:id="@+id/et_char_width"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
+            android:gravity="center"
+            android:minWidth="100dp"
+            android:background="@drawable/bg_edittext"
+            android:digits="0123456789"
+            android:maxLength="5"
+            android:inputType="number"
+            android:imeOptions="actionNext" />
+
+        <TextView
+            style="@style/TextView_base.secondary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:text = "(范围600----60000)"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/wrap_char_width"
+        android:background="@color/colorDivider"/>
+
+    <TextView
+        style="@style/TextView_base.primary"
+        android:id="@+id/title_point_size"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/wrap_char_width"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text = "墨点大小"
+        android:textSize="@dimen/textSize_medium"/>
+
+    <LinearLayout
+        android:id="@+id/wrap_point_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title_point_size"
+        android:orientation="horizontal"
+        android:layout_alignLeft="@id/wrap_char_width"
+        android:layout_alignStart="@id/wrap_char_width"
+        android:paddingBottom="10dp">
+
+        <EditText
+            style="@style/TextView_base.primary"
+            android:id="@+id/et_point_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
+            android:gravity="center"
+            android:minWidth="100dp"
+            android:background="@drawable/bg_edittext"
+            android:digits="0123456789"
+            android:maxLength="5"
+            android:inputType="number"
+            android:imeOptions="actionNext" />
+
+        <TextView
+            style="@style/TextView_base.secondary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text = "(范围300----30000)"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/wrap_point_size"
+        android:background="@color/colorDivider"/>
+
+    <TextView
+        style="@style/TextView_base.primary"
+        android:id="@+id/title_print_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/wrap_point_size"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text = "打印延时"
+        android:textSize="@dimen/textSize_medium"/>
+
+    <LinearLayout
+        android:id="@+id/wrap_print_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title_print_time"
+        android:orientation="horizontal"
+        android:layout_alignLeft="@id/wrap_char_width"
+        android:layout_alignStart="@id/wrap_char_width"
+        android:paddingBottom="10dp">
+
+        <EditText
+            style="@style/TextView_base.primary"
+            android:id="@+id/et_print_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
+            android:gravity="center"
+            android:minWidth="100dp"
+            android:background="@drawable/bg_edittext"
+            android:digits="0123456789"
+            android:maxLength="5"
+            android:inputType="number"
+            android:imeOptions="actionNext" />
+
+        <TextView
+            style="@style/TextView_base.secondary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text = "(范围0----5000)"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/wrap_print_time"
+        android:background="@color/colorDivider"/>
+
+    <TextView
+        style="@style/TextView_base.primary"
+        android:id="@+id/title_char_space"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/wrap_print_time"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text = "字符间隔"
+        android:textSize="@dimen/textSize_medium"/>
+
+    <LinearLayout
+        android:id="@+id/wrap_char_space"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title_char_space"
+        android:orientation="horizontal"
+        android:layout_alignLeft="@id/wrap_char_width"
+        android:layout_alignStart="@id/wrap_char_width"
+        android:paddingBottom="10dp">
+
+        <EditText
+            style="@style/TextView_base.primary"
+            android:id="@+id/et_char_space"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
+            android:gravity="center"
+            android:minWidth="100dp"
+            android:background="@drawable/bg_edittext"
+            android:digits="0123456789"
+            android:maxLength="5"
+            android:inputType="number"
+            android:imeOptions="actionDone"/>
+
+        <TextView
+            style="@style/TextView_base.secondary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text = "(范围0----255)"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/wrap_char_space"
+        android:background="@color/colorDivider"/>
+
+    <TextView
+        style="@style/TextView_base.primary"
+        android:id="@+id/title_char_reversal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/wrap_char_space"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text = "字符颠倒"
+        android:textSize="@dimen/textSize_medium"/>
+
+
+    <RadioGroup
+        android:id="@+id/radio_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title_char_reversal"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingBottom="5dp">
+
+        <RadioButton
+            style="@style/btn_base.radioButton"
+            android:id="@+id/normal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="正常样式"/>
+
+        <RadioButton
+            style="@style/btn_base.radioButton"
+            android:id="@+id/flip_h"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="水平翻转"/>
+
+        <RadioButton
+            style="@style/btn_base.radioButton"
+            android:id="@+id/flip_v"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="垂直翻转"/>
+
+        <RadioButton
+            style="@style/btn_base.radioButton"
+            android:id="@+id/h_and_v"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="水平+垂直"/>
+    </RadioGroup>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/radio_group"
+        android:background="@color/colorDivider"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/radio_group"
+        android:layout_marginTop="20dp"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp">
+
+        <Button
+            style="@style/btn_base"
+            android:id="@+id/btn_read"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:text="读取参数"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <Button
+            style="@style/btn_base"
+            android:id="@+id/btn_write"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:text="写入参数"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

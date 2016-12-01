@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="TextView_base">
+        <item name="android:textSize">@dimen/textSize_medium</item>
+        <item name="android:textColor">@color/color_text_icon</item>
+    </style>
+
+    <style name="TextView_base.primary">
+        <item name="android:textSize">@dimen/textSize_small</item>
+        <item name="android:textColor">@color/textPrimary</item>
+    </style>
+
+    <style name="TextView_base.secondary">
+        <item name="android:textSize">@dimen/textSize_small</item>
+        <item name="android:textColor">@color/textSecondary</item>
+    </style>
+
+    <style name="TextView_base.accent">
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
+    <style name="TextView_base.FlatEditText">
+        <item name="android:singleLine">true</item>
+        <item name="fl_theme">@array/dark</item>
+        <item name="fl_textAppearance">fl_light</item>
+        <item name="fl_fontWeight">light</item>
+        <item name="fl_cornerRadius">3dp</item>
+        <item name="fl_borderWidth">0dp</item>
+        <item name="fl_fieldStyle">fl_transparent</item>
+    </style>
+
+</resources>
