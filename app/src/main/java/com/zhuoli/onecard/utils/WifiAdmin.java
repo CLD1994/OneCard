@@ -102,8 +102,7 @@ public class WifiAdmin {
                             NetworkInfo networkInfo = (NetworkInfo) parcelableExtra;
                             NetworkInfo.DetailedState state = networkInfo.getDetailedState();
                             if (state == NetworkInfo.DetailedState.OBTAINING_IPADDR) {
-                                Logger.d("OBTAINING_IPADDR");
-                                WIFIIsChange = true;
+                                 WIFIIsChange = true;
                             } else if (state == NetworkInfo.DetailedState.CONNECTED && WIFIIsChange) {
                                 Logger.d("CONNECTED");
                                 WIFIIsChange = false;
@@ -125,16 +124,20 @@ public class WifiAdmin {
                                         }
                                     }, 3000);
                                 }
-                            }else if (state == NetworkInfo.DetailedState.DISCONNECTED){
-                                if (WIFIIsChange){
-                                    WIFIIsChange = false;
-                                    String ssid = mWifiManager.getConnectionInfo().getSSID().replace("\"","");
-                                    if (TextUtils.equals(ssid,"<unknown ssid>")){
-                                        connectionListener.onWifiDisconnected();
-                                    }
-                                }else {
-                                    WIFIIsChange = true;
-                                }
+                            } else if (state == NetworkInfo.DetailedState.DISCONNECTED){
+	                            Logger.d("DISCONNECTED  " + networkInfo.getExtraInfo());
+//	                            connectionListener.onWifiDisconnected(ssid);
+	                            Logger.d("原因：" + networkInfo.getReason());
+	                            switch (networkInfo.getReason()){
+		                            case "0":
+			                            //失去信号 自动断开
+			                            break;
+		                            case "3":
+			                            //程序内部修改
+			                            break;
+	                            }
+                            } else if (state == NetworkInfo.DetailedState.SCANNING){
+	                            Logger.d("SCANNING  " + networkInfo.getExtraInfo());
                             }
                         }
                     }
@@ -380,7 +383,7 @@ public class WifiAdmin {
 
     public interface OnWifiConnectedListener{
         void onWifiConnected(WifiInfo wifiInfo);
-        void onWifiDisconnected();
+        void onWifiDisconnected(String nowConnectedSsid);
     }
 
     public void setWifiStateListener(WifiStateListener Listener) {

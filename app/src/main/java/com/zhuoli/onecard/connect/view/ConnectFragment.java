@@ -76,6 +76,7 @@ public class ConnectFragment
 	private boolean connected = false;
 	private boolean isSearched = false;
 	private boolean isCountdown = false;
+	private boolean isReChoose = false;
 	private CountDownTimer timer;
 	private final long TIMEOUT = 15000;
 
@@ -97,21 +98,21 @@ public class ConnectFragment
 				switch (connectEvent.getType()){
 					case ConnectEvent.CHOOSE_SSID:
 						//连接选择的WIFI
-						timer.cancel();
 						String currentSsid = mWifiAdmin.getSSID().replace("\"","");
 						String selectSsid = connectEvent.getBundle().getString(ConnectEvent.KEY_CHOOSE_SSID);
 						if (TextUtils.isEmpty(currentSsid)){
+							isReChoose = false;
 							ssid = selectSsid;
 							changeState(ConnectFragment.CONNECTING);
-							getFragmentManager().beginTransaction().hide(chooseSSIDFragment).show(ConnectFragment.this).commit();
 						}else {
+							isReChoose = true;
 							if (judgeSSID(currentSsid)) {
 								ssid = currentSsid;
 								if (!TextUtils.equals(ssid, selectSsid)) {
 									ssid = selectSsid;
 									changeState(ConnectFragment.CONNECTING);
-									getFragmentManager().beginTransaction().hide(chooseSSIDFragment).show(ConnectFragment.this).commit();
 								} else {
+									timer.cancel();
 									connected = true;
 									isCountdown = false;
 									startActivity(new Intent(getHostActivity(), MainActivity.class));
@@ -126,7 +127,6 @@ public class ConnectFragment
 							} else {
 								ssid = selectSsid;
 								changeState(ConnectFragment.CONNECTING);
-								getFragmentManager().beginTransaction().hide(chooseSSIDFragment).show(ConnectFragment.this).commit();
 							}
 						}
 						break;
@@ -165,21 +165,17 @@ public class ConnectFragment
 
 			@Override
 			public void onScanResult(List<ScanResult> wifiList, List<WifiConfiguration> WifiConfiguration) {
-				//if app has connected to AP of cup ,return.
 				if (connecting || connected) {
 					return;
 				}
 
-				//not found any wifi,return.
 				if (wifiList == null || wifiList.size() == 0) {
 					return;
 				}
 
-				//add cup ssid to ssidList
 				SSIDList.clear();
 				for (ScanResult result : wifiList) {
 					String SSID = result.SSID;
-					Logger.d(SSID);
 					if (judgeSSID(SSID)) {
 						Logger.d("扫描到SSID :" + SSID);
 						if (!SSIDList.contains(SSID)) {
@@ -189,7 +185,6 @@ public class ConnectFragment
 				}
 
 				if (isSearched) {
-					Logger.d("发现了水杯SSID发生变动,刷新界面");
 					if (SSIDList == null){
 						SSIDList = new ArrayList<>();
 					}
@@ -219,8 +214,9 @@ public class ConnectFragment
 			}
 
 			@Override
-			public void onWifiDisconnected() {
+			public void onWifiDisconnected(String nowConnectedSsid) {
 				Logger.d("wifi断开");
+				//TODO 自动断开则尝试重新连接
 				new Handler().postDelayed(new Runnable() {
 					@Override
 					public void run() {
@@ -265,7 +261,7 @@ public class ConnectFragment
 									getHostActivity().addFragment(chooseSSIDFragment,"chooseSSID",false);
 								}else {
 									if (chooseSSIDFragment.isHidden()){
-										getFragmentManager().beginTransaction().show(chooseSSIDFragment).commit();
+										getFragmentManager().beginTransaction().show(chooseSSIDFragment).commitAllowingStateLoss();
 									}
 								}
 								isSearched = true;
@@ -311,12 +307,14 @@ public class ConnectFragment
 				}
 				center_image.setVisibility(View.GONE);
 				connecting = true;
+				getFragmentManager().beginTransaction().hide(chooseSSIDFragment).show(ConnectFragment.this).commitAllowingStateLoss();
 				connectAP(ssid);
 				break;
 			case SUCCESS :
 				title.setText("连接成功");
 				connecting = false;
 				connected = true;
+				isReChoose = false;
 				break;
 			case FAILURE :
 				title.setText("连接失败");
