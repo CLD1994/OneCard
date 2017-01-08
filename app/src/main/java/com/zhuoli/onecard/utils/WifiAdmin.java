@@ -63,7 +63,7 @@ public class WifiAdmin {
 
             private boolean WIFIIsChange = false;
 
-            private boolean WIFIIsDisconnected = false;
+            private boolean WIFIAutoDisconnected = false;
             @Override
             public void onReceive(Context context, Intent intent) {
 
@@ -71,7 +71,7 @@ public class WifiAdmin {
                     final String action = intent.getAction();
                     // wifi已成功扫描到可用wifi。
                     if (action.equals(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)) {
-
+						Logger.d("更新扫描结果");
                         mWifiList = mWifiManager.getScanResults();
                         mWifiConfiguration = mWifiManager.getConfiguredNetworks();
                         if (mListener != null) {
@@ -103,6 +103,7 @@ public class WifiAdmin {
                             NetworkInfo.DetailedState state = networkInfo.getDetailedState();
                             if (state == NetworkInfo.DetailedState.OBTAINING_IPADDR) {
                                  WIFIIsChange = true;
+	                            Logger.d("OBTAINING_IPADDR");
                             } else if (state == NetworkInfo.DetailedState.CONNECTED && WIFIIsChange) {
                                 Logger.d("CONNECTED");
                                 WIFIIsChange = false;
@@ -125,19 +126,31 @@ public class WifiAdmin {
                                     }, 3000);
                                 }
                             } else if (state == NetworkInfo.DetailedState.DISCONNECTED){
-	                            Logger.d("DISCONNECTED  " + networkInfo.getExtraInfo());
-//	                            connectionListener.onWifiDisconnected(ssid);
-	                            Logger.d("原因：" + networkInfo.getReason());
-	                            switch (networkInfo.getReason()){
-		                            case "0":
-			                            //失去信号 自动断开
-			                            break;
-		                            case "3":
-			                            //程序内部修改
-			                            break;
+	                            Logger.d("DISCONNECTED");
+	                            Logger.d(networkInfo.getExtraInfo());
+	                            if (networkInfo.getReason() != null){
+		                            Logger.d(networkInfo.getReason());
+		                            switch (networkInfo.getReason()){
+			                            case "0":
+				                            //失去信号 自动断开
+				                            if (WIFIAutoDisconnected){
+					                            WIFIAutoDisconnected = false;
+					                            connectionListener.onWifiDisconnected();
+				                            }else {
+					                            WIFIAutoDisconnected = true;
+				                            }
+				                            break;
+			                            case "3":
+				                            //程序内部修改
+				                            break;
+		                            }
+	                            }else {
+		                            Logger.d("reason is null");
+		                            //系统设置操作
 	                            }
                             } else if (state == NetworkInfo.DetailedState.SCANNING){
 	                            Logger.d("SCANNING  " + networkInfo.getExtraInfo());
+	                            Logger.d(networkInfo.getReason());
                             }
                         }
                     }
@@ -235,7 +248,12 @@ public class WifiAdmin {
     }
 
     public String getSSID(){
-        return (mWifiInfo == null) ? "" : mWifiInfo.getSSID();
+	    String typeName = mConnectivityManager.getActiveNetworkInfo().getTypeName();
+	    if (TextUtils.equals(typeName, "WIFI")){
+		    return (mWifiInfo == null) ? "" : mWifiInfo.getSSID();
+	    }else {
+		    return "";
+	    }
     }
 
     // 得到MAC地址  
@@ -383,7 +401,7 @@ public class WifiAdmin {
 
     public interface OnWifiConnectedListener{
         void onWifiConnected(WifiInfo wifiInfo);
-        void onWifiDisconnected(String nowConnectedSsid);
+        void onWifiDisconnected();
     }
 
     public void setWifiStateListener(WifiStateListener Listener) {

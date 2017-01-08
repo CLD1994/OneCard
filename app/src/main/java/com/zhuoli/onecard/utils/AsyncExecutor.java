@@ -51,7 +51,9 @@ public class AsyncExecutor {
             @Override
             protected void done() {
                 try {
-                    get();
+                    if (!isCancelled()){
+                        get();
+                    }
                 } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
                     worker.onError(e);

@@ -23,7 +23,7 @@ public class OneCardSocket{
 	/** 端口 */
 	private final int port = 8899;
 	/** 超时时间(ms) */
-	private final int timeout = 3000;
+	private final int timeout = 5000;
 	/** 套接字 */
 	private Socket socket = null;
 	/** 输出流 */

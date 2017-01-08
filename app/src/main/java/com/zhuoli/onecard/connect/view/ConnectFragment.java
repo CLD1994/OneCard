@@ -76,9 +76,9 @@ public class ConnectFragment
 	private boolean connected = false;
 	private boolean isSearched = false;
 	private boolean isCountdown = false;
-	private boolean isReChoose = false;
 	private CountDownTimer timer;
 	private final long TIMEOUT = 15000;
+	private int retryCount = 0;
 
 	ChooseSSIDFragment chooseSSIDFragment;
 
@@ -101,11 +101,9 @@ public class ConnectFragment
 						String currentSsid = mWifiAdmin.getSSID().replace("\"","");
 						String selectSsid = connectEvent.getBundle().getString(ConnectEvent.KEY_CHOOSE_SSID);
 						if (TextUtils.isEmpty(currentSsid)){
-							isReChoose = false;
 							ssid = selectSsid;
 							changeState(ConnectFragment.CONNECTING);
 						}else {
-							isReChoose = true;
 							if (judgeSSID(currentSsid)) {
 								ssid = currentSsid;
 								if (!TextUtils.equals(ssid, selectSsid)) {
@@ -196,39 +194,58 @@ public class ConnectFragment
 			@Override
 			public void onWifiConnected(WifiInfo wifiInfo) {
 				if (judgeSSID(wifiInfo.getSSID().replace("\"",""))){
-					changeState(SUCCESS);
-					getPresenter().setCurrentSSID(ssid);
-					new Handler().postDelayed(new Runnable() {
-						@Override
-						public void run() {
-							startActivity(new Intent(getHostActivity(), MainActivity.class));
-						}
-					},1000);
+					Logger.d("连接成功");
+					if (!connected){
+						changeState(SUCCESS);
+						getPresenter().setCurrentSSID(ssid);
+						new Handler().postDelayed(new Runnable() {
+							@Override
+							public void run() {
+								startActivity(new Intent(getHostActivity(), MainActivity.class));
+							}
+						},1000);
+					}
 				}else {
+					Logger.d("连接上了别的ssid");
 					if (connecting){
 						//连接失败
-						Logger.d("无信号,自动连接上了别的ssid");
 						changeState(FAILURE);
 					}
 				}
 			}
 
 			@Override
-			public void onWifiDisconnected(String nowConnectedSsid) {
-				Logger.d("wifi断开");
-				//TODO 自动断开则尝试重新连接
+			public void onWifiDisconnected() {
+				Logger.d("wifi自动断开,扫描中...");
+				mWifiAdmin.startScan();
 				new Handler().postDelayed(new Runnable() {
 					@Override
 					public void run() {
 						if (connected){
-							connected = false;
-							isSearched = false;
-							RxBus.getDefault().post(ConnectEvent.instant().setType(ConnectEvent.WIFI_DISCONNECTED));
-							chooseSSIDFragment.ssidAdapter.getData().clear();
-							changeState(SEARCHING);
+							if (retryCount <= 3){
+								retryCount++;
+								Logger.d("尝试自动连接...第%d次", retryCount);
+								if (!connectAP(ssid)){
+									Logger.d("直接失败,放弃重连");
+									retryCount = 0;
+									connected = false;
+									isSearched = false;
+									RxBus.getDefault().post(ConnectEvent.instant().setType(ConnectEvent.WIFI_DISCONNECTED));
+									chooseSSIDFragment.ssidAdapter.getData().clear();
+									changeState(SEARCHING);
+								}
+							}else {
+								Logger.d("自动重连失败");
+								retryCount = 0;
+								connected = false;
+								isSearched = false;
+								RxBus.getDefault().post(ConnectEvent.instant().setType(ConnectEvent.WIFI_DISCONNECTED));
+								chooseSSIDFragment.ssidAdapter.getData().clear();
+								changeState(SEARCHING);
+							}
 						}
 					}
-				},3000);
+				},6000);
 
 			}
 		});
@@ -314,7 +331,6 @@ public class ConnectFragment
 				title.setText("连接成功");
 				connecting = false;
 				connected = true;
-				isReChoose = false;
 				break;
 			case FAILURE :
 				title.setText("连接失败");
@@ -337,9 +353,9 @@ public class ConnectFragment
 		}
 	}
 
-	private void connectAP(final String SSID) {
+	private boolean connectAP(final String SSID) {
 		//进入连接过程
-		mWifiAdmin.connectWIFI(SSID, "LINGDIANZEROINK");
+		return mWifiAdmin.connectWIFI(SSID, "LINGDIANZEROINK");
 	}
 
 	public Boolean judgeSSID(String SSID) {

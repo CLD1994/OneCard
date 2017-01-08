@@ -98,6 +98,7 @@ public class CleanFragment
 	@Override
 	public void showProgressIndicator() {
 		btn_clear.setEnabled(false);
+		rv_clean.setEnabled(false);
 		tv_clear.setVisibility(View.VISIBLE);
 		tv_clear.setText("正在清洗中......");
 	}
@@ -105,6 +106,7 @@ public class CleanFragment
 	@Override
 	public void hideProgressIndicator() {
 		btn_clear.setEnabled(true);
+		rv_clean.setEnabled(true);
 	}
 
 	@Override
