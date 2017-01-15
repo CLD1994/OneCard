@@ -53,6 +53,8 @@ public class CleanFragment
 
 	private SettingComponent mComponent;
 
+	private OnItemClickListener mOnItemClickListener;
+
 	@Override
 	protected void initView(View root, Bundle savedInstanceState) {
 		setRippleEffect(btn_clear,R.drawable.bg_btn);
@@ -61,12 +63,13 @@ public class CleanFragment
 		List<String> list = Arrays.asList("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16");
 		mCleanAdapter = new CleanAdapter(R.layout.item_clean,list,getHostActivity());
 		rv_clean.setAdapter(mCleanAdapter);
-		rv_clean.addOnItemTouchListener(new OnItemClickListener() {
+		mOnItemClickListener = new OnItemClickListener() {
 			@Override
 			public void SimpleOnItemClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
 				getPresenter().cleanSprayer(mCleanAdapter.getData().get(i));
 			}
-		});
+		};
+		rv_clean.addOnItemTouchListener(mOnItemClickListener);
 	}
 
 	@NonNull
@@ -98,7 +101,7 @@ public class CleanFragment
 	@Override
 	public void showProgressIndicator() {
 		btn_clear.setEnabled(false);
-		rv_clean.setEnabled(false);
+		rv_clean.removeOnItemTouchListener(mOnItemClickListener);
 		tv_clear.setVisibility(View.VISIBLE);
 		tv_clear.setText("正在清洗中......");
 	}
@@ -106,7 +109,7 @@ public class CleanFragment
 	@Override
 	public void hideProgressIndicator() {
 		btn_clear.setEnabled(true);
-		rv_clean.setEnabled(true);
+		rv_clean.addOnItemTouchListener(mOnItemClickListener);
 	}
 
 	@Override
@@ -129,4 +132,6 @@ public class CleanFragment
 		super.onDestroyView();
 		mCleanAdapter = null;
 	}
+
+
 }
