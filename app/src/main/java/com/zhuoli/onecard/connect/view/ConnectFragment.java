@@ -132,6 +132,7 @@ public class ConnectFragment
 									isCountdown = false;
 									isConnectSucceed = true;
 									isConnected = true;
+									getPresenter().setCurrentSSID(ssid);
 									startActivity(new Intent(getHostActivity(), MainActivity.class));
 									new Handler().postDelayed(new Runnable() {
 										@Override
@@ -440,6 +441,8 @@ public class ConnectFragment
 						getFragmentManager().beginTransaction().show(chooseSSIDFragment).hide(ConnectFragment.this).commitAllowingStateLoss();
 						chooseSSIDFragment.ssidAdapter.getData().clear();
 						mWifiAdmin.startScan();
+						isCountdown = true;
+						timer.start();
 					}
 				});
 				break;
@@ -453,6 +456,7 @@ public class ConnectFragment
 
 	public Boolean judgeSSID(String SSID) {
 		return Pattern.compile("(?i)^ZeroInk|Octopus").matcher(SSID).find();
+//		return true;
 	}
 
 	@NonNull
