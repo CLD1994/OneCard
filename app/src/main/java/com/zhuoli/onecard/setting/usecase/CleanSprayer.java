@@ -1,5 +1,6 @@
 package com.zhuoli.onecard.setting.usecase;
 
+import android.os.Handler;
 import android.text.TextUtils;
 
 import com.zhuoli.onecard.base.UseCase;
@@ -16,104 +17,109 @@ import java.util.concurrent.FutureTask;
  * Created by CLD on 2016/9/27 0027.
  */
 
-public class CleanSprayer extends UseCase<CleanSprayer.RequestValues,CleanSprayer.ResponseValue>{
+public class CleanSprayer extends UseCase<CleanSprayer.RequestValues, CleanSprayer.ResponseValue> {
 
-	private final DataSource mDataSource;
+    private final DataSource mDataSource;
 
-	private Cancelable mCancelable;
+    private Cancelable mCancelable;
 
-	public CleanSprayer(DataSource dataSource) {
-		mDataSource = dataSource;
-		mCancelable = new Cancelable();
-	}
+    public CleanSprayer(DataSource dataSource) {
+        mDataSource = dataSource;
+        mCancelable = new Cancelable();
+    }
 
-	@Override
-	protected String getTag() {
-		return CleanSprayer.class.getSimpleName();
-	}
+    @Override
+    protected String getTag() {
+        return CleanSprayer.class.getSimpleName();
+    }
 
-	@Override
-	protected UseCase.Cancelable executeUseCase(RequestValues requestValues) {
-		mCancelable.mFutureTask = mDataSource.execute(requestValues.getCommand(), new DataSource.Callback<byte[]>() {
-			@Override
-			public void onDataLoad(byte[] data) {
-				try {
-					getUseCaseCallback().onSuccess(new CleanSprayer.ResponseValue(data));
-				} catch (IOException e) {
-					if (!retry()){
-						getUseCaseCallback().onError(new Status("NOK",e.getMessage()));
-					}
-				}
-			}
+    @Override
+    protected UseCase.Cancelable executeUseCase(RequestValues requestValues) {
+        mCancelable.mFutureTask = mDataSource.execute(requestValues.getCommand(), new DataSource.Callback<byte[]>() {
+            @Override
+            public void onDataLoad(final byte[] data) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            getUseCaseCallback().onSuccess(new ResponseValue(data));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, 4000);
 
-			@Override
-			public void onError(Status error) {
-				getUseCaseCallback().onError(error);
-			}
-		});
-		return mCancelable;
-	}
+            }
 
-	public static class RequestValues implements UseCase.RequestValues {
-		private String sn;
+            @Override
+            public void onError(Status error) {
+                getUseCaseCallback().onError(error);
+            }
+        });
+        return mCancelable;
+    }
 
-		public RequestValues() {}
+    public static class RequestValues implements UseCase.RequestValues {
+        private String sn;
 
-		public String getSn() {
-			return sn;
-		}
+        public RequestValues() {
+        }
 
-		public void setSn(String sn) {
-			this.sn = sn;
-		}
+        public String getSn() {
+            return sn;
+        }
 
-		byte[] getCommand(){
-			if (TextUtils.isEmpty(sn)){
-				return Util.encodingCommand(SysConstant.CLEAN_SPRAYER,null);
-			}else {
-				String data = CryptoUtils.HEX.decToHexString(sn,8);
-				return Util.encodingCommand(SysConstant.CLEAN_SPRAYER_SINGLE,data);
-			}
+        public void setSn(String sn) {
+            this.sn = sn;
+        }
 
-		}
-	}
+        byte[] getCommand() {
+            if (TextUtils.isEmpty(sn)) {
+                return Util.encodingCommand(SysConstant.CLEAN_SPRAYER, null);
+            } else {
+                String data = CryptoUtils.HEX.decToHexString(sn, 8);
+                return Util.encodingCommand(SysConstant.CLEAN_SPRAYER_SINGLE, data);
+            }
 
-	public static class ResponseValue implements UseCase.ResponseValue {
-		private String message;
+        }
+    }
 
-		public ResponseValue(byte[] responseValue) throws IOException {
-			if (Util.writeIsSucceed(responseValue)){
-				message = SysConstant.OK;
-			}else {
-				throw new IOException("失败,请重新请求!");
-			}
-		}
+    public static class ResponseValue implements UseCase.ResponseValue {
+        private String message;
 
-		public String getMessage() {
-			return message;
-		}
-	}
+        public ResponseValue(byte[] responseValue) throws IOException {
+            if (Util.writeIsSucceed(responseValue)) {
+                message = SysConstant.OK;
+            } else {
+                throw new IOException("失败,请重新请求!");
+            }
+        }
 
-	public static class Cancelable implements UseCase.Cancelable {
+        public String getMessage() {
+            return message;
+        }
+    }
 
-		private FutureTask mFutureTask;
+    public static class Cancelable implements UseCase.Cancelable {
 
-		public Cancelable() {
+        private FutureTask mFutureTask;
 
-		}
+        public Cancelable() {
 
-		public Cancelable(FutureTask futureTask) {
-			mFutureTask = futureTask;
-		}
+        }
 
-		@Override
-		public boolean isCanceled() {
-			return mFutureTask.isCancelled();
-		}
+        public Cancelable(FutureTask futureTask) {
+            mFutureTask = futureTask;
+        }
 
-		@Override
-		public void cancel() {
-			mFutureTask.cancel(true);
-		}
-	}
+        @Override
+        public boolean isCanceled() {
+            return mFutureTask.isCancelled();
+        }
+
+        @Override
+        public void cancel() {
+            mFutureTask.cancel(true);
+        }
+    }
 }
